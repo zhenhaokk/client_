@@ -16,7 +16,7 @@ import useStyles from "./styles";
 import Input from "./Input";
 import Icon from "./icon";
 // import { signin, signup } from "../../actions/auth";
-// import { AUTH } from "../../constants/actionTypes";
+import { AUTH } from "../../constants/actionTypes";
 
 const initialState = {
   firstName: "",
@@ -45,11 +45,20 @@ const Auth = () => {
   };
 
   const googleSuccess = async (res) => {
-    await console.log(res);
+    const result = res?.profileObj;
+    const token = res?.tokenId;
+
+    try {
+      dispatch({ type: AUTH, data: { result, token } });
+
+      history.push("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const googleError = (error) => {
-    console.log(error);
+    console.log(error.message);
   };
 
   return (
@@ -112,7 +121,7 @@ const Auth = () => {
             {isSignup ? "Sign Up" : "Sign In"}
           </Button>
           <GoogleLogin
-            clientId="822948692641-7g00gou7qa2pmoiqosai0gekodnupn7n.apps.googleusercontent.com"
+            clientId="336931713145-ahtbqpuou6d3qtshph16957sijquupr4.apps.googleusercontent.com"
             render={(renderProps) => (
               <Button
                 className={classes.googleButton}

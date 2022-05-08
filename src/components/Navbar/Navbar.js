@@ -10,7 +10,25 @@ import useStyles from "./styles";
 
 const Navbar = () => {
   const classes = useStyles();
-  const user = null;
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const location = useLocation();
+  console.log(user);
+
+  useEffect(() => {
+    const token = user?.token;
+    setUser(JSON.parse(localStorage.getItem("profile")));
+  }, [location]);
+
+  const logout = () => {
+    dispatch({ type: actionType.LOGOUT });
+
+    history.push("/auth");
+
+    setUser(null);
+  };
+
   return (
     <AppBar className={classes.appBar} position="static" color="inherit">
       <div className={classes.brandContainer}>
@@ -42,7 +60,7 @@ const Navbar = () => {
               variant="contained"
               className={classes.logout}
               color="secondary"
-              onClick={() => {}}
+              onClick={logout}
             >
               Logout
             </Button>
